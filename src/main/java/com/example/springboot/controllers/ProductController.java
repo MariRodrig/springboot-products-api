@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -33,29 +32,18 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public ResponseEntity<Object> getOneProduct(@PathVariable(value = "id") UUID id) {
         var product0 = productService.getOneProduct(id);
-        if (product0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(product0.get());
+        return ResponseEntity.status(HttpStatus.OK).body(product0);
     }
 
     @PutMapping("/products/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value = "id") UUID id, @RequestBody @Valid ProductRecordDto productRecordDto) {
         var product0 = productService.updateProduct(id, productRecordDto);
-        if (product0.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(product0.get());
+        return ResponseEntity.status(HttpStatus.OK).body(product0);
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") UUID id) {
-        var resultadoExclusao = productService.deleteProduct(id);
-
-        if (resultadoExclusao == false) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
-        }
+    public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") UUID id){
+        productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.OK).body("Product delete successfully.");
     }
 }
